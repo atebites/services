@@ -13,7 +13,7 @@ These services use no third-party dependencies:
 - [ ] [Go](services/go-raw)
 - [ ] [Java](services/java-raw)
 - [ ] [Php](services/php-raw)
-- [ ] [Python](services/python-raw)
+- [X] [Python](services/python-raw)
 - [ ] [R](services/r-raw)
 - [ ] [Ruby](services/ruby-raw)
 - [ ] [Rust](services/rust-raw)
