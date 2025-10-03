@@ -1,0 +1,28 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  test-services:
+    name: Test services
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install pixi.
+        shell: bash
+        run: |
+          export PIXI_VERSION=v0.55.0 
+          export DEBIAN_FRONTEND=noninteractive
+          curl -fsSL https://pixi.sh/install.sh | sh
+          echo "$HOME/.pixi/bin" >> $GITHUB_PATH
+      - name: Checkout repository.
+        uses: actions/checkout@v4
+      - name: Run test script.
+        run: bash test.sh
+        
+        
+        
