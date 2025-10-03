@@ -34,7 +34,7 @@ class Message:
 class Store:
     def __init__(self):
         self._lock = Lock()
-        self._next_id = 1
+        self._next_id = 0
         self._data: Dict[int, Message] = {}
 
     def create(self, author: str, content: str) -> Message:
@@ -104,7 +104,7 @@ class MessageHandlers:
         start = int(query["start"][0]) if "start" in query else 0
         limit = 10
         before, current, after = store.list(start, limit)
-        if current is None: return (HTTPStatus.OK, {"data": [], "next": None, "previous": None})
+        if current is None: return (HTTPStatus.OK, {"data": [], "next": None, "previous": (before[0].id if len(before) > 0 else None)})
         data = [current.to_dict()] + ([message.to_dict() for message in after[0:limit-1]] if len(after) > 0 else [])
         return (HTTPStatus.OK, {
             "data": data,
@@ -170,7 +170,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             # Extract the version.
             request_version = None
             with suppress(Exception): request_version = int(re.search(r"(?:^|[,;])\s*version\s*=\s*([^,; ]+)\s*", self.headers.get("Accept")).group(1).strip())
-            if request_version is None:
+            if request_version is None or request_version not in self.router:
                 self._respond(HTTPStatus.NOT_ACCEPTABLE, None, {"error": "Invalid or missing version."})
                 return
             
@@ -237,7 +237,7 @@ def main(arguments):
     # - HANDLER takes six arguments: STORE, METHOD, VERSION, PARAMS, QUERY, and BODY and returns a STATUS_CODE and optionally a BODY and some headers.
     # router[VERSION][METHOD][PATH_REGEX] = HANDLER
     
-    router = defaultdict(lambda: defaultdict(lambda: defaultdict(dict)))
+    router = defaultdict(lambda: defaultdict(dict))
 
     # Deprecation adds additional headers when a version is marked as deprecated.
     # deprecation[VERSION] = (DEPRECATION_TIME, SUNSET_TIME)
