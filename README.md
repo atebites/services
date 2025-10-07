@@ -11,7 +11,7 @@ These services use no third-party dependencies:
 - [ ] [C](services/c-raw)
 - [ ] [C++](services/cpp-raw)
 - [ ] [Go](services/go-raw)
-- [ ] [Java](services/java-raw)
+- [X] [Java](services/java-raw)
 - [ ] [Php](services/php-raw)
 - [X] [Python](services/python-raw)
 - [ ] [R](services/r-raw)

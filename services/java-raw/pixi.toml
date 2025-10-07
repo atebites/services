@@ -1,0 +1,12 @@
+[workspace]
+authors = ["Geoffrey Daniels <geoff@gpdaniels.com>"]
+channels = ["conda-forge"]
+name = "java-raw"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+service = { cmd = ["java", "service.java"], env = { } }
+
+[dependencies]
+openjdk = ">=24.0.2,<25"
